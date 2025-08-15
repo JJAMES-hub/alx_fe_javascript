@@ -1,99 +1,73 @@
+let quotes = JSON.parse(localStorage.getItem('quotes')) || [];
 
-let quotes = [];
-let lastFilter = "all";
+// Load saved filter
+let savedFilter = localStorage.getItem('selectedCategory') || "all";
 
-// Load quotes from Local Storage
-function loadQuotes() {
-  const storedQuotes = localStorage.getItem("quotes");
-  if (storedQuotes) {
-    quotes = JSON.parse(storedQuotes);
-  }
-  lastFilter = localStorage.getItem("lastFilter") || "all";
-  populateCategories();
-  displayQuotes();
-}
-
-// Save quotes to Local Storage
+// Save quotes to localStorage
 function saveQuotes() {
-  localStorage.setItem("quotes", JSON.stringify(quotes));
+  localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Add new quote
+// Add a new quote
 function addQuote() {
   const text = document.getElementById("quoteText").value.trim();
-  const author = document.getElementById("quoteAuthor").value.trim();
   const category = document.getElementById("quoteCategory").value.trim();
 
-  if (!text || !author || !category) {
-    alert("Please fill all fields.");
+  if (!text || !category) {
+    alert("Please enter both a quote and a category!");
     return;
   }
 
-  quotes.push({ text, author, category });
+  quotes.push({ text, category });
   saveQuotes();
   populateCategories();
   displayQuotes();
-
   document.getElementById("quoteText").value = "";
-  document.getElementById("quoteAuthor").value = "";
   document.getElementById("quoteCategory").value = "";
 }
 
-// Display quotes based on selected category
-function displayQuotes() {
-  const container = document.getElementById("quoteDisplay");
-  container.innerHTML = "";
-
-  const filteredQuotes = lastFilter === "all"
-    ? quotes
-    : quotes.filter(q => q.category === lastFilter);
-
-  if (filteredQuotes.length === 0) {
-    container.innerHTML = "<p>No quotes available.</p>";
-    return;
-  }
-
-  filteredQuotes.forEach(q => {
-    const div = document.createElement("div");
-    div.innerHTML = `<strong>"${q.text}"</strong> - ${q.author} <em>(${q.category})</em>`;
-    container.appendChild(div);
-  });
-}
-
-// Populate categories in dropdown
+// Populate category dropdown
 function populateCategories() {
   const categorySelect = document.getElementById("categoryFilter");
-  categorySelect.innerHTML = `<option value="all">All Categories</option>`;
+  const categories = ["all", ...new Set(quotes.map(q => q.category))];
 
-  const categories = [...new Set(quotes.map(q => q.category))];
-  categories.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.appendChild(option);
-  });
-
-  categorySelect.value = lastFilter;
+  categorySelect.innerHTML = categories
+    .map(cat => `<option value="${cat}" ${cat === savedFilter ? "selected" : ""}>${cat}</option>`)
+    .join("");
 }
 
-// Filter quotes and save filter preference
+// Filter quotes
 function filterQuotes() {
-  lastFilter = document.getElementById("categoryFilter").value;
-  localStorage.setItem("lastFilter", lastFilter);
+  const category = document.getElementById("categoryFilter").value;
+  savedFilter = category;
+  localStorage.setItem('selectedCategory', category);
   displayQuotes();
 }
 
-// Export quotes as JSON file
+// Display quotes based on filter
+function displayQuotes() {
+  const list = document.getElementById("quoteList");
+  const category = savedFilter;
+  list.innerHTML = "";
+
+  quotes
+    .filter(q => category === "all" || q.category === category)
+    .forEach(q => {
+      const li = document.createElement("li");
+      li.textContent = `"${q.text}" — ${q.category}`;
+      list.appendChild(li);
+    });
+}
+
+// Export quotes to JSON file
 function exportToJsonFile() {
   const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
   a.href = url;
   a.download = "quotes.json";
-  document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // Import quotes from JSON file
@@ -107,8 +81,8 @@ function importFromJsonFile(event) {
       saveQuotes();
       populateCategories();
       displayQuotes();
-      alert("Quotes imported successfully!");
-    } catch {
+      alert('Quotes imported successfully!');
+    } catch (err) {
       alert("Invalid JSON file.");
     }
   };
@@ -116,4 +90,5 @@ function importFromJsonFile(event) {
 }
 
 // Initialize
-loadQuotes();
+populateCategories();
+displayQuotes();
