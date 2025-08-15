@@ -4,51 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamic Quote Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      text-align: center;
-      padding: 20px;
-    }
-    #quoteDisplay {
-      margin: 20px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 8px;
-      width: 60%;
-      font-size: 1.2em;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #007bff;
-      color: white;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    input[type="file"] {
-      margin-top: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>Dynamic Quote Generator</h1>
-  
-  <div id="quoteDisplay">Click "Show Random Quote" to get inspired!</div>
 
-  <button id="showQuoteBtn">Show Random Quote</button>
-  <button id="addQuoteBtn">Add New Quote</button>
-  <button id="exportBtn">Export Quotes (JSON)</button>
-  <input type="file" id="importFile" accept=".json">
-  <button id="clearStorageBtn">Clear Stored Quotes</button>
+  <!-- Quote Display -->
+  <div id="quoteDisplay"></div>
+
+  <!-- Add Quote Form -->
+  <h2>Add New Quote</h2>
+  <input type="text" id="quoteText" placeholder="Enter quote">
+  <input type="text" id="quoteAuthor" placeholder="Enter author">
+  <input type="text" id="quoteCategory" placeholder="Enter category">
+  <button onclick="addQuote()">Add Quote</button>
+
+  <!-- Category Filter -->
+  <h2>Filter by Category</h2>
+  <select id="categoryFilter" onchange="filterQuotes()">
+    <option value="all">All Categories</option>
+  </select>
+
+  <!-- JSON Import/Export -->
+  <h2>Import / Export Quotes</h2>
+  <button onclick="exportToJsonFile()">Export Quotes</button>
+  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)">
 
   <script src="script.js"></script>
 </body>
 </html>
+
