@@ -2,29 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dynamic Quote Generator with Filters</title>
+  <title>Dynamic Quote Generator with Server Sync</title>
+  <style>
+    #notification {
+      background-color: yellow;
+      padding: 10px;
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Category Filter -->
   <select id="categoryFilter" onchange="filterQuotes()">
     <option value="all">All Categories</option>
-    <!-- Populated dynamically -->
   </select>
 
-  <!-- Random Quote Display -->
   <div id="quoteDisplay" style="margin-top: 20px; font-style: italic; font-size: 1.2em;">
     Click a category to see a random quote!
   </div>
 
-  <!-- Add Quote Form -->
   <div style="margin-top: 20px;">
     <input type="text" id="quoteText" placeholder="Enter quote">
     <input type="text" id="quoteCategory" placeholder="Enter category">
     <button onclick="addQuote()">Add Quote</button>
   </div>
 
+  <div id="notification"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
+
