@@ -1,32 +1,37 @@
-// Initial quotes array
+ // Quotes array with text and category properties
 let quotes = [
-    { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-    { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
-    { text: "It's not whether you get knocked down, it's whether you get up.", category: "Perseverance" }
+  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+  { text: "Do what you can with all you have, wherever you are.", category: "Inspiration" }
 ];
 
-// Function to show a random quote
-function showRandomQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const quote = quotes[randomIndex];
-    document.getElementById("quoteDisplay").innerText = `"${quote.text}" - ${quote.category}`;
+// Function to display a random quote
+function displayRandomQuote() {
+  let randomIndex = Math.floor(Math.random() * quotes.length);
+  let quote = quotes[randomIndex];
+  document.getElementById("quote-text").textContent = `"${quote.text}"`;
+  document.getElementById("quote-category").textContent = `— ${quote.category}`;
 }
 
-// Function to add a new quote
+// Function to add a new quote and update the DOM
 function addQuote() {
-    const quoteText = document.getElementById("newQuoteText").value.trim();
-    const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
+  let text = document.getElementById("new-quote-text").value.trim();
+  let category = document.getElementById("new-quote-category").value.trim();
 
-    if (quoteText && quoteCategory) {
-        quotes.push({ text: quoteText, category: quoteCategory });
-        document.getElementById("newQuoteText").value = "";
-        document.getElementById("newQuoteCategory").value = "";
-        showRandomQuote(); // Show newly added quote
-    } else {
-        alert("Please enter both quote text and category.");
-    }
+  if (text && category) {
+    quotes.push({ text: text, category: category });
+    document.getElementById("new-quote-text").value = "";
+    document.getElementById("new-quote-category").value = "";
+    displayRandomQuote();
+  } else {
+    alert("Please enter both a quote and a category.");
+  }
 }
 
 // Event listeners
-document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
+document.getElementById("new-quote-btn").addEventListener("click", displayRandomQuote);
+document.getElementById("add-quote-btn").addEventListener("click", addQuote);
+
+// Display the first quote on page load
+displayRandomQuote();
+
