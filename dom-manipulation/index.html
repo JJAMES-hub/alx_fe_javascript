@@ -1,53 +1,64 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Quote Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        #notificationArea {
-            display: none;
-            background: yellow;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            font-weight: bold;
-        }
-        #categoryFilter {
-            padding: 5px;
-            margin-bottom: 15px;
-        }
-        .quote-item {
-            background: #fff;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-left: 5px solid #007BFF;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .quote-item p {
-            margin: 0;
-            font-size: 1.1em;
-        }
-        .quote-item small {
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Quote Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #quoteDisplay { font-size: 1.2rem; margin-bottom: 20px; }
+    #quoteList { margin: 15px 0; }
+    #quoteList li { margin: 5px 0; }
+    .toast { 
+      background: #333; color: #fff; 
+      padding: 8px 12px; border-radius: 5px; 
+      margin: 5px 0; font-size: 0.9rem; 
+    }
+    .controls { margin: 10px 0; }
+    button { margin: 5px; }
+  </style>
 </head>
 <body>
-    <h1>Dynamic Quote Generator</h1>
+  <h1>Dynamic Quote Generator</h1>
 
-    <!-- Notification area -->
-    <div id="notificationArea"></div>
+  <!-- Display -->
+  <div id="quoteDisplay"></div>
+  <button id="newQuote">Show New Quote</button>
 
-    <!-- Cat
+  <!-- Filter -->
+  <div class="controls">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+    </select>
+  </div>
+
+  <!-- Quote List -->
+  <ul id="quoteList"></ul>
+
+  <!-- Add Quote Form -->
+  <div class="controls">
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button onclick="addQuote()">Add Quote</button>
+  </div>
+
+  <!-- Import/Export -->
+  <div class="controls">
+    <button onclick="exportToJsonFile()">Export Quotes (JSON)</button>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+  </div>
+
+  <!-- Sync Section -->
+  <div class="controls">
+    <button onclick="syncQuotes()">Sync with Server</button>
+    <div id="syncLog"></div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
